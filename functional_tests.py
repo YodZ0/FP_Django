@@ -1,15 +1,16 @@
 import unittest
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 
 
-class NewVisitorTest(unittest.TestCase):
+class BasicInstallTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
     def tearDown(self):
         self.browser.quit()
 
-    def test_install(self):
+    def test_homepage_title(self):
         # Tima has heard about cool web blog called "Solo-leveling with ChatGPT"
         # He tried to visit that site
         self.browser.get("http://localhost:8000")
@@ -17,13 +18,17 @@ class NewVisitorTest(unittest.TestCase):
         # He saw a page with title "Solo-leveling with ChatGPT"
         self.assertIn("Solo-leveling with ChatGPT", self.browser.title)
 
+    def test_homepage_header(self):
+        self.browser.get("http://localhost:8000")
+        # He saw main header "Blog about usage of ChatGPT in self-improvement"
+        header = self.browser.find_elements(By.TAG_NAME, "h1")[0]
+        self.assertEqual("Blog about usage of ChatGPT in self-improvement", header)
+
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
-
-# logo and main header "Blog about usage of ChatGPT in self-improvement"
 
 # Also he saw all articles with title and description (short) there
 
