@@ -1,9 +1,14 @@
 import unittest
+from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+from blog.models import Article
+from django.http import HttpRequest
+from blog.views import home_page
 
-class BasicInstallTest(unittest.TestCase):
+
+class HomePageTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -25,22 +30,56 @@ class BasicInstallTest(unittest.TestCase):
 
     def test_homepage_shows_articles(self):
         self.browser.get('http://localhost:8000')
-        # Also he saw all articles with title and description (short) there
-        container = self.browser.find_element(By.CLASS_NAME, 'container')
+        # Also he saw all articles
+        self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'articles-list'))
 
-        article_title = container.find_element(By.CLASS_NAME, 'article-title')
-        article_summary = container.find_element(By.CLASS_NAME, 'article-summary')
-        article_text = container.find_element(By.CLASS_NAME, 'article-text')
+    def test_homepage_article_look_correct(self):
+        # There is an Articles with title, summary, category and publication date
+        self.browser.get('http://localhost:8000')
+        article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
+        article_summary = self.browser.find_element(By.CLASS_NAME, 'article-summary')
+        article_category = self.browser.find_element(By.CLASS_NAME, 'article-category')
 
         self.assertTrue(article_title)
         self.assertTrue(article_summary)
-        self.assertFalse(article_text)
+        self.assertTrue(article_category)
+
+    def test_homepage_displays_articles(self):
+        # Создаем временные объекты статей
+        Article.objects.create(
+            title='Article 1',
+            summary='Article 1 summary',
+            text='Article 1 text',
+            category='Category 1',
+            pub_date=datetime.now()
+        )
+        Article.objects.create(
+            title='Article 2',
+            summary='Article 2 summary',
+            text='Article 2 text',
+            category='Category 2',
+            pub_date=datetime.now()
+        )
+
+        request = HttpRequest()
+        response = home_page(request)
+        html = response.content.decode('utf-8')
+
+        self.assertIn('Article 1 title', html)
+        self.assertIn('Article 1 summary', html)
+        self.assertNotIn('Article 1 text', html)
+
+        self.assertIn('Article 2 title', html)
+        self.assertIn('Article 2 summary', html)
+        self.assertNotIn('Article 2 text', html)
 
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
+# There is an update date under Article
+
 # There was a top-bar menu with buttons: Blog, About
 # and sidebar with categories: Programming, English, Other
 
