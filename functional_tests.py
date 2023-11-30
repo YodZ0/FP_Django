@@ -1,11 +1,6 @@
 import unittest
-from datetime import datetime
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
-from blog.models import Article
-from django.http import HttpRequest
-from blog.views import home_page
 
 
 class HomePageTest(unittest.TestCase):
@@ -28,7 +23,7 @@ class HomePageTest(unittest.TestCase):
         header = self.browser.find_element(By.TAG_NAME, 'h1').text
         self.assertEqual('Blog about usage of ChatGPT in self-improvement', header)
 
-    def test_homepage_shows_articles(self):
+    def test_homepage_has_articles(self):
         self.browser.get('http://localhost:8000')
         # Also he saw all articles
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'articles-list'))
@@ -44,41 +39,12 @@ class HomePageTest(unittest.TestCase):
         self.assertTrue(article_summary)
         self.assertTrue(article_category)
 
-    def test_homepage_displays_articles(self):
-        # Создаем временные объекты статей
-        Article.objects.create(
-            title='Article 1',
-            summary='Article 1 summary',
-            text='Article 1 text',
-            category='Category 1',
-            pub_date=datetime.now()
-        )
-        Article.objects.create(
-            title='Article 2',
-            summary='Article 2 summary',
-            text='Article 2 text',
-            category='Category 2',
-            pub_date=datetime.now()
-        )
-
-        request = HttpRequest()
-        response = home_page(request)
-        html = response.content.decode('utf-8')
-
-        self.assertIn('Article 1 title', html)
-        self.assertIn('Article 1 summary', html)
-        self.assertNotIn('Article 1 text', html)
-
-        self.assertIn('Article 2 title', html)
-        self.assertIn('Article 2 summary', html)
-        self.assertNotIn('Article 2 text', html)
-
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
-# There is an update date under Article
+# There is also an update date under Article
 
 # There was a top-bar menu with buttons: Blog, About
 # and sidebar with categories: Programming, English, Other

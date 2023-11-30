@@ -1,6 +1,8 @@
 from django.test import TestCase
 from blog.models import Article
 from datetime import datetime
+from django.http import HttpRequest
+from blog.views import home_page
 
 
 # Create your tests here.
@@ -8,6 +10,34 @@ class HomePageTest(TestCase):
     def test_homepage_uses_correct_template(self):
         response = self.client.get('/')
         self.assertTemplateUsed(response=response, template_name='home_page.html')
+
+    def test_homepage_displays_articles(self):
+        Article.objects.create(
+            title='Article 1 title',
+            summary='Article 1 summary',
+            text='Article 1 text',
+            category='Category 1',
+            pub_date=datetime.now()
+        )
+        Article.objects.create(
+            title='Article 2 title',
+            summary='Article 2 summary',
+            text='Article 2 text',
+            category='Category 2',
+            pub_date=datetime.now()
+        )
+
+        request = HttpRequest()
+        response = home_page(request)
+        html = response.content.decode('UTF8')
+
+        self.assertIn('Article 1 title', html)
+        self.assertIn('Article 1 summary', html)
+        self.assertNotIn('Article 1 text', html)
+
+        self.assertIn('Article 2 title', html)
+        self.assertIn('Article 2 summary', html)
+        self.assertNotIn('Article 2 text', html)
 
 
 class ArticleModelTest(TestCase):
