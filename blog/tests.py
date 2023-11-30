@@ -64,9 +64,10 @@ class ArticleModelTest(TestCase):
         article_2.save()
         # load all Articles from DB
         articles = Article.objects.all()
+        articles = articles[::-1]
         # check: there is two (2) articles
         self.assertEqual(len(articles), 2)
-        # check: first loaded == article 1
-        self.assertEqual(articles[0].title, article_1.title)
-        # check: second loaded == article 2
-        self.assertEqual(articles[1].title, article_2.title)
+        # check: first loaded == article 2
+        self.assertEqual(articles[0].title, article_2.title)
+        # check: second loaded == article 1
+        self.assertEqual(articles[1].title, article_1.title)

@@ -34,17 +34,25 @@ class HomePageTest(unittest.TestCase):
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
         article_summary = self.browser.find_element(By.CLASS_NAME, 'article-summary')
         article_category = self.browser.find_element(By.CLASS_NAME, 'article-category')
+        article_pubdate = self.browser.find_element(By.CLASS_NAME, 'article-pubdate')
 
         self.assertTrue(article_title)
         self.assertTrue(article_summary)
         self.assertTrue(article_category)
+        self.assertTrue(article_pubdate)
 
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
-# There is also an update date under Article
+# Timur clicked on Article title and get article page with full text
+# On article page he saw a title, category, and article text
+# A title of this article page was article title
+
+# There is a page title with SLUG
+
+# There is also an update date under Article if it was updated
 
 # There was a top-bar menu with buttons: Blog, About
 # and sidebar with categories: Programming, English, Other
@@ -53,10 +61,5 @@ if __name__ == '__main__':
 # that allows to choose current page
 
 # Then he saw footer with copyrighting and other info
-
-# When he clicked on article title he moved to article page
-
-# On article page he saw a title, category, and article text
-# A title of this article page was article title
 
 # >>>---- Experience usage story ----<<<
