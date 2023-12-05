@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Hello {% endblock %}</title>
+    <link href="{% static 'styles/styles.css' %}" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <header>
+            <h1>Solo-leveling with ChatGPT</h1>
+        </header>
+    </div>
+    <div class="navigation-bar">
+        <div class="navigation">
+            <a href="#"></a> |
+            <a href="#">Home</a> |
+            <a href="#">About</a> |
+            <a href="categories.html">Categories</a> |
+            <a href="#">Contact</a> |
+            <a href="#"></a>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="content-header">
+            <h3>Welcome to self-improvement blog!</h3>
+            <p>Here you can see different articles which was generated with ChatGPT.</p>
+        </div>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>&copy; 2023 Solo-leveling with ChatGPT blog</footer>
+</body>
+</html>
