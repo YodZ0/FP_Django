@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Article {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="article">
+            <h3 class="article-title">{{article.title}}</h3>
+            <p class="article-text">{{article.text}}</p>
+            <a class="category-link" href="/category"><p class="article-category"><strong>Category: </strong>{{article.category}}</p></a>
+            <p class="article-pubdate"><strong>Publication Date: </strong>{{article.pub_date}}</p>
+        </div>
+    </div>
+{% endblock %}

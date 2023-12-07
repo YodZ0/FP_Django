@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %} Categories {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="articles-list">
+            {% for article in articles %}
+                <div class="article">
+                    <a class="category-link" href="/categories"><p class="article-category"><strong>Category: </strong>{{article.category}}</p></a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

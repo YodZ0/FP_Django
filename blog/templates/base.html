@@ -10,32 +10,29 @@
 <body>
     <div class="header">
         <header>
-            <h1>Solo-leveling with ChatGPT</h1>
+            <a class="header-link" href="/"><h1>Solo-leveling with ChatGPT</h1></a>
         </header>
     </div>
     <div class="navigation-bar">
         <div class="navigation">
             <a href="#"></a> |
-            <a href="#">Home</a> |
-            <a href="#">About</a> |
-            <a href="categories.html">Categories</a> |
-            <a href="#">Contact</a> |
+            <a href="/">Home</a> |
+            <a href="/about">About</a> |
+            <a href="/categories">Categories</a> |
+            <a href="/contact">Contact</a> |
             <a href="#"></a>
         </div>
     </div>
 
     <main class="container">
-        <div class="content-header">
-            <h3>Welcome to self-improvement blog!</h3>
-            <p>Here you can see different articles which was generated with ChatGPT.</p>
-        </div>
+        {% block content-header%}
+        {% endblock %}
 
         <div class="content">
             {% block content %}
             {% endblock %}
         </div>
     </main>
-
     <footer>&copy; 2023 Solo-leveling with ChatGPT blog</footer>
 </body>
 </html>

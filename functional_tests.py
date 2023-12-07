@@ -21,7 +21,7 @@ class HomePageTest(unittest.TestCase):
         self.browser.get('http://localhost:8000')
         # He saw main header "Blog about usage of ChatGPT in self-improvement"
         header = self.browser.find_element(By.TAG_NAME, 'h1').text
-        self.assertEqual('Blog about usage of ChatGPT in self-improvement', header)
+        self.assertEqual('Solo-leveling with ChatGPT', header)
 
     def test_homepage_has_articles(self):
         self.browser.get('http://localhost:8000')
@@ -41,12 +41,26 @@ class HomePageTest(unittest.TestCase):
         self.assertTrue(article_category)
         self.assertTrue(article_pubdate)
 
+    def test_homepage_article_title_link_leads_to_article_page(self):
+        # Timur clicked on Article title and get article page with full text
+        # open home page
+        self.browser.get('http://localhost:8000')
+        # find article title
+        article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
+        # find a link in the article title
+        article_title_link = article_title.find_element(By.TAG_NAME, 'a')
+        # follow the link
+        self.browser.get(article_title_link.get_attribute('href'))
+        # check in opened page correct article title
+        article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
+        self.assertEqual(article_title.text, self.browser.find_element(By.CLASS_NAME, 'article-title').text)
+
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
-# Timur clicked on Article title and get article page with full text
+
 # On article page he saw a title, category, and article text
 # A title of this article page was article title
 
@@ -54,12 +68,19 @@ if __name__ == '__main__':
 
 # There is also an update date under Article if it was updated
 
-# There was a top-bar menu with buttons: Blog, About
-# and sidebar with categories: Programming, English, Other
+# There was a top-bar menu with buttons: Home, About, Categories, Contact
+
+# On click on Home, opens Home page
+# On click on About, opens About page
+# On click on Contact, opens Contact page
+
+# On click on Categories, opens Categories page with categories list with links /categories
+# On click on category, opens page with all articles that have same category /category
 
 # When he scrolled down, he saw 10 articles before bot-bar menu with pagination
 # that allows to choose current page
 
-# Then he saw footer with copyrighting and other info
+# Timur tries to open unexistable article and he saw 404 page
+# with button "Go to main page", that follows to home page
 
 # >>>---- Experience usage story ----<<<

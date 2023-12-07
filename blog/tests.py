@@ -2,7 +2,7 @@ from django.test import TestCase
 from blog.models import Article
 from datetime import datetime
 from django.http import HttpRequest
-from blog.views import home_page
+from blog.views import home_page, article_page
 
 
 # Create your tests here.
@@ -32,12 +32,36 @@ class HomePageTest(TestCase):
         html = response.content.decode('UTF8')
 
         self.assertIn('Article 1 title', html)
+        self.assertIn('/category/title-1', html)
         self.assertIn('Article 1 summary', html)
         self.assertNotIn('Article 1 text', html)
 
         self.assertIn('Article 2 title', html)
+        self.assertIn('/category/title-2', html)
         self.assertIn('Article 2 summary', html)
         self.assertNotIn('Article 2 text', html)
+
+
+class ArticlePageTest(TestCase):
+    # def test_article_page_uses_correct_template(self):
+    #     response = self.client.get('/')
+    #     self.assertTemplateUsed(response=response, template_name='article_page.html')
+
+    def test_article_page_displays_article(self):
+        Article.objects.create(
+            title='Article 1 title',
+            summary='Article 1 summary',
+            text='Article 1 text',
+            category='Category 1',
+            pub_date=datetime.now()
+        )
+        request = HttpRequest()
+        response = article_page(request, 1)
+        html = response.content.decode('UTF8')
+
+        self.assertIn('Article 1 title', html)
+        self.assertNotIn('Article 1 summary', html)
+        self.assertIn('Article 1 text', html)
 
 
 class ArticleModelTest(TestCase):

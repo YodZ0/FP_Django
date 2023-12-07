@@ -9,9 +9,10 @@ class Article(models.Model):
     category = models.CharField(max_length=255)
     pub_date = models.DateTimeField()
     # TODO
+    # category -> create new model -> ForeignKey -> drop-down list
+    # slug = ...
     # upd_date = models.DateTimeField(auto_now=True)
     # is_published = models.BooleanField()
-    # slug = ...
 
     def __str__(self):
         return f'{self.title}, {self.category}'
