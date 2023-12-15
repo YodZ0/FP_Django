@@ -2,6 +2,8 @@ import unittest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+# Imitation of user actions
+
 
 class HomePageTest(unittest.TestCase):
     def setUp(self):
@@ -28,7 +30,7 @@ class HomePageTest(unittest.TestCase):
         # Also he saw all articles
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'articles-list'))
 
-    def test_homepage_article_look_correct(self):
+    def test_homepage_article_looks_correct(self):
         # There is an Articles with title, summary, category and publication date
         self.browser.get('http://localhost:8000')
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
@@ -51,20 +53,40 @@ class HomePageTest(unittest.TestCase):
         article_title_link = article_title.find_element(By.TAG_NAME, 'a')
         # follow the link
         self.browser.get(article_title_link.get_attribute('href'))
-        # check in opened page correct article title
+        # check if opened page correct article title
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
         self.assertEqual(article_title.text, self.browser.find_element(By.CLASS_NAME, 'article-title').text)
+
+
+class ArticlePageTest(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome()
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_article_page_looks_correct(self):
+        # Timur find an article on home page
+        self.browser.get('http://localhost:8000')
+        article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
+        article_title_text = article_title.text
+        article_title_link = article_title.find_element(By.TAG_NAME, 'a')
+        # He follows an article
+        self.browser.get(article_title_link.get_attribute('href'))
+        # Article page has article title
+        self.assertEqual(article_title_text, self.browser.title)
+        # article text
+        self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-text'))
+        # article category
+        self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-category'))
+        # article pubdate
+        self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-pubdate'))
 
 
 if __name__ == '__main__':
     unittest.main()
 
 # <<<---- Experience usage story ---->>>
-
-# On article page he saw a title, category, and article text
-# A title of this article page was article title
-
-# There is a page title with SLUG
 
 # There is also an update date under Article if it was updated
 
@@ -80,7 +102,6 @@ if __name__ == '__main__':
 # When he scrolled down, he saw 10 articles before bot-bar menu with pagination
 # that allows to choose current page
 
-# Timur tries to open unexistable article and he saw 404 page
-# with button "Go to main page", that follows to home page
+# Timur tries to open non-existent article, and he saw 404 page
 
 # >>>---- Experience usage story ----<<<

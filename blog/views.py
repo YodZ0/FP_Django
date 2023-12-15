@@ -13,8 +13,8 @@ def home_page(request):
                   )
 
 
-def article_page(request, article_id):
-    article = Article.objects.get(pk=article_id)
+def article_page(request, slug):
+    article = Article.objects.get(slug=slug)
     context = {'article': article}
     return render(request=request,
                   template_name='article_page.html',

@@ -2,15 +2,24 @@ from django.db import models
 
 
 # Create your models here.
+
+
+class Categories(models.Model):
+    # английский язык, маркетинг, краткое содержание книг, спортивные программы, ИИ, программирование
+    category_name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.category_name
+
+
 class Article(models.Model):
     title = models.CharField(max_length=255)
     summary = models.CharField(max_length=500)
     text = models.TextField()
-    category = models.CharField(max_length=255)
-    pub_date = models.DateTimeField()
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    pub_date = models.DateField()
+    slug = models.CharField(max_length=255, unique=True)
     # TODO
-    # category -> create new model -> ForeignKey -> drop-down list
-    # slug = ...
     # upd_date = models.DateTimeField(auto_now=True)
     # is_published = models.BooleanField()
 

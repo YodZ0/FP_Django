@@ -1,5 +1,5 @@
 from django.test import TestCase
-from blog.models import Article
+from blog.models import Article, Categories
 from datetime import datetime
 from django.http import HttpRequest
 from blog.views import home_page, article_page
@@ -12,19 +12,27 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response=response, template_name='home_page.html')
 
     def test_homepage_displays_articles(self):
+        category_1 = Categories.objects.create(
+            category_name='category-1',
+        )
         Article.objects.create(
             title='Article 1 title',
             summary='Article 1 summary',
             text='Article 1 text',
-            category='Category 1',
-            pub_date=datetime.now()
+            category=category_1,
+            pub_date=datetime.now(),
+            slug='slug-1',
+        )
+        category_2 = Categories.objects.create(
+            category_name='category-2',
         )
         Article.objects.create(
             title='Article 2 title',
             summary='Article 2 summary',
             text='Article 2 text',
-            category='Category 2',
-            pub_date=datetime.now()
+            category=category_2,
+            pub_date=datetime.now(),
+            slug='slug-2',
         )
 
         request = HttpRequest()
@@ -32,12 +40,12 @@ class HomePageTest(TestCase):
         html = response.content.decode('UTF8')
 
         self.assertIn('Article 1 title', html)
-        self.assertIn('/category/title-1', html)
+        self.assertIn('slug-1', html)
         self.assertIn('Article 1 summary', html)
         self.assertNotIn('Article 1 text', html)
 
         self.assertIn('Article 2 title', html)
-        self.assertIn('/category/title-2', html)
+        self.assertIn('slug-2', html)
         self.assertIn('Article 2 summary', html)
         self.assertNotIn('Article 2 text', html)
 
@@ -48,15 +56,19 @@ class ArticlePageTest(TestCase):
     #     self.assertTemplateUsed(response=response, template_name='article_page.html')
 
     def test_article_page_displays_article(self):
+        category_1 = Categories.objects.create(
+            category_name='category-1',
+        )
         Article.objects.create(
             title='Article 1 title',
             summary='Article 1 summary',
             text='Article 1 text',
-            category='Category 1',
-            pub_date=datetime.now()
+            category=category_1,
+            pub_date=datetime.now(),
+            slug='slug-1',
         )
         request = HttpRequest()
-        response = article_page(request, 1)
+        response = article_page(request, 'slug-1')
         html = response.content.decode('UTF8')
 
         self.assertIn('Article 1 title', html)
@@ -66,23 +78,33 @@ class ArticlePageTest(TestCase):
 
 class ArticleModelTest(TestCase):
     def test_article_model_save_and_retrieve(self):
+        # create category 1
+        category_1 = Categories.objects.create(
+            category_name='category-1',
+        )
         # create Article 1
         article_1 = Article(
             title='Article 1',
             summary='Article 1 summary',
             text='Article 1 text',
-            category='Article 1 category',
+            category=category_1,
             pub_date=datetime.now(),
+            slug='slug-1',
         )
         # save Article 1 in DB
         article_1.save()
+        # create category 2
+        category_2 = Categories.objects.create(
+            category_name='category-2',
+        )
         # create Article 2
         article_2 = Article(
             title='Article 2',
             summary='Article 2 summary',
             text='Article 2 text',
-            category='Article 2 category',
+            category=category_2,
             pub_date=datetime.now(),
+            slug='slug-2',
         )
         # save Article 2 in DB
         article_2.save()
@@ -93,5 +115,9 @@ class ArticleModelTest(TestCase):
         self.assertEqual(len(articles), 2)
         # check: first loaded == article 2
         self.assertEqual(articles[0].title, article_2.title)
+        self.assertEqual(articles[0].slug, article_2.slug)
+        self.assertEqual(articles[0].category, article_2.category)
         # check: second loaded == article 1
         self.assertEqual(articles[1].title, article_1.title)
+        self.assertEqual(articles[1].slug, article_1.slug)
+        self.assertEqual(articles[1].category, article_1.category)
