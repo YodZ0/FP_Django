@@ -1,11 +1,12 @@
 import unittest
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
 # Imitation of user actions
 
 
-class AboutPageTest(unittest.TestCase):
+class AboutPageTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -13,11 +14,13 @@ class AboutPageTest(unittest.TestCase):
         self.browser.quit()
 
     def test_about_page_looks_correct(self):
-        self.browser.get('http://localhost:8000/about')
+        self.browser.get(self.live_server_url)
+        about = self.browser.find_element(By.CLASS_NAME, 'nav-about')
+        self.browser.get(about.get_attribute('href'))
         self.assertEqual('About', self.browser.title)
 
 
-class ContactPageTest(unittest.TestCase):
+class ContactPageTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -25,11 +28,13 @@ class ContactPageTest(unittest.TestCase):
         self.browser.quit()
 
     def test_about_page_looks_correct(self):
-        self.browser.get('http://localhost:8000/contact')
-        self.assertEqual('Contacts', self.browser.title)
+        self.browser.get(self.live_server_url)
+        about = self.browser.find_element(By.CLASS_NAME, 'nav-contact')
+        self.browser.get(about.get_attribute('href'))
+        self.assertEqual('Contact', self.browser.title)
 
 
-class HomePageTest(unittest.TestCase):
+class HomePageTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -39,24 +44,24 @@ class HomePageTest(unittest.TestCase):
     def test_homepage_title(self):
         # Tima has heard about cool web blog called "Solo-leveling with ChatGPT"
         # He tried to visit that site
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         # He saw a page with title "Solo-leveling with ChatGPT"
         self.assertIn('Solo-leveling with ChatGPT', self.browser.title)
 
     def test_homepage_header(self):
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         # He saw main header "Blog about usage of ChatGPT in self-improvement"
         header = self.browser.find_element(By.TAG_NAME, 'h1').text
         self.assertEqual('Solo-leveling with ChatGPT', header)
 
     def test_homepage_has_articles(self):
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         # Also he saw all articles
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'articles-list'))
 
     def test_homepage_article_looks_correct(self):
         # There is an Articles with title, summary, category and publication date
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
         article_summary = self.browser.find_element(By.CLASS_NAME, 'article-summary')
         article_category = self.browser.find_element(By.CLASS_NAME, 'article-category')
@@ -70,7 +75,7 @@ class HomePageTest(unittest.TestCase):
     def test_homepage_article_title_link_leads_to_article_page(self):
         # Timur clicked on Article title and get article page with full text
         # open home page
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         # find article title
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
         # find a link in the article title
@@ -82,7 +87,7 @@ class HomePageTest(unittest.TestCase):
         self.assertEqual(article_title.text, self.browser.find_element(By.CLASS_NAME, 'article-title').text)
 
 
-class ArticlePageTest(unittest.TestCase):
+class ArticlePageTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
@@ -91,7 +96,7 @@ class ArticlePageTest(unittest.TestCase):
 
     def test_article_page_looks_correct(self):
         # Timur find an article on home page
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
         article_title = self.browser.find_element(By.CLASS_NAME, 'article-title')
         article_title_text = article_title.text
         article_title_link = article_title.find_element(By.TAG_NAME, 'a')
@@ -107,16 +112,12 @@ class ArticlePageTest(unittest.TestCase):
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-pubdate'))
 
 
-class CategoriesPageTest(unittest.TestCase):
+class CategoriesPageTest(LiveServerTestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
 
     def tearDown(self):
         self.browser.quit()
-
-
-if __name__ == '__main__':
-    unittest.main()
 
 # <<<---- Experience usage story ---->>>
 

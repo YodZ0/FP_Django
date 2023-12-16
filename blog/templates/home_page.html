@@ -14,7 +14,7 @@
         <div class="articles-list">
             {% for article in articles %}
                 <div class="article">
-                    <h3 class="article-title"><a class="article-link" href="/category/{{article.slug}}">{{article.title}}</a></h3>
+                    <h3 class="article-title"><a class="article-link" href="{{article.get_absolute_url}}">{{article.title}}</a></h3>
                     <p class="article-summary">{{article.summary}}</p>
                     <p class="article-category"><strong>Category: </strong><a class="category-link" href="/category">{{article.category}}</a></p>
                     <p class="article-pubdate"><strong>Publication Date: </strong>{{article.pub_date}}</p>

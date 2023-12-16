@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.urls import reverse
 
 # Create your models here.
 
@@ -25,3 +25,11 @@ class Article(models.Model):
 
     def __str__(self):
         return f'{self.title}, {self.category}'
+
+    def get_absolute_url(self):
+        return reverse('article_page', kwargs={'slug': self.slug})
+        # return reverse('article_page',
+        #                kwargs={
+        #                    'category': self.category,
+        #                    'slug': self.slug,
+        #                })
