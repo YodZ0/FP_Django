@@ -5,6 +5,30 @@ from selenium.webdriver.common.by import By
 # Imitation of user actions
 
 
+class AboutPageTest(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome()
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_about_page_looks_correct(self):
+        self.browser.get('http://localhost:8000/about')
+        self.assertEqual('About', self.browser.title)
+
+
+class ContactPageTest(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome()
+
+    def tearDown(self):
+        self.browser.quit()
+
+    def test_about_page_looks_correct(self):
+        self.browser.get('http://localhost:8000/contact')
+        self.assertEqual('Contacts', self.browser.title)
+
+
 class HomePageTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Chrome()
@@ -81,6 +105,14 @@ class ArticlePageTest(unittest.TestCase):
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-category'))
         # article pubdate
         self.assertTrue(self.browser.find_element(By.CLASS_NAME, 'article-pubdate'))
+
+
+class CategoriesPageTest(unittest.TestCase):
+    def setUp(self):
+        self.browser = webdriver.Chrome()
+
+    def tearDown(self):
+        self.browser.quit()
 
 
 if __name__ == '__main__':

@@ -121,3 +121,15 @@ class ArticleModelTest(TestCase):
         self.assertEqual(articles[1].title, article_1.title)
         self.assertEqual(articles[1].slug, article_1.slug)
         self.assertEqual(articles[1].category, article_1.category)
+
+
+class AboutPageTest(TestCase):
+    def test_about_page_uses_correct_template(self):
+        response = self.client.get('/about/')
+        self.assertTemplateUsed(response=response, template_name='about_page.html')
+
+
+class ContactPageTest(TestCase):
+    def test_contact_page_uses_correct_template(self):
+        response = self.client.get('/contact/')
+        self.assertTemplateUsed(response=response, template_name='contact_page.html')

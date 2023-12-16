@@ -22,8 +22,12 @@ def article_page(request, slug):
                   )
 
 
-def category_page(request):
-    pass
+def about_page(request):
+    return render(request=request, template_name='about_page.html')
+
+
+def contact_page(request):
+    return render(request=request, template_name='contact_page.html')
 
 
 # def categories_page(request):
